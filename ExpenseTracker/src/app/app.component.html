@@ -1,0 +1,19 @@
+<ion-app>
+  <ion-router-outlet></ion-router-outlet>
+  <ion-tabs>
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button tab="transaction" (click)="navigateToTransactionPage()">
+        <ion-icon name="play-circle"></ion-icon>
+        Transaction
+      </ion-tab-button>
+      <ion-tab-button tab="dashboard" (click)="navigateToDashboardPage()">
+        <ion-icon name="radio"></ion-icon>
+        Dahsboard
+      </ion-tab-button>
+      <ion-tab-button tab="settings" (click)="navigateToSettingsPage()">
+        <ion-icon name="library"></ion-icon>
+        Settings
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+</ion-app>
