@@ -1,0 +1,18 @@
+.dashboard-container {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    // background-color: yellow;
+    .budget-panel {
+        flex:1;
+        .test {
+            background-color: red;
+        }
+    }
+    .income-expense-panel {
+        flex:4;
+    }
+    .savings-panel {
+        flex:1;
+    }
+}
