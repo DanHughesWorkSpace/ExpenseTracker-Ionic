@@ -1,46 +1,33 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>dashboard</ion-title>
+    <ion-title>Dashboard</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" color="red">
-  <!-- <ion-item>
-    <div class="test">
-      <p *ngFor="let x of expenses">{{ x.description}}</p>
-    </div>
-  </ion-item>
-  <ion-item> {{expenses | json}} </ion-item>
-  <ion-item> {{income | json}}</ion-item> -->
   <ion-grid class="dashboard-container">
     <ion-row class="budget-panel">
       <ion-col>
-        <div class="budget-panel">dudeee</div>
+        <app-wallet [walletValue]="walletValue()"></app-wallet>
       </ion-col>
     </ion-row>
     <ion-row class="income-expense-panel">
       <ion-col>
-        <div class="income-expense-panel__tabs">
-          dudeee
-          <ion-tabs>
-            <ion-tab-bar slot="top">
-              <ion-tab-button tab="income">
-                Income
-                <ion-icon name="trending-up"></ion-icon>
-              </ion-tab-button>
-              <ion-tab-button tab="expense">
-                Expenses
-                <ion-icon name="trending-down"></ion-icon>
-              </ion-tab-button>
-            </ion-tab-bar>
-          </ion-tabs>
-          <!-- <ion-router-outlet></ion-router-outlet> -->
-        </div>
-      </ion-col>
-    </ion-row>
-    <ion-row class="savings-panel">
-      <ion-col>
-        <ion-item> dudeee</ion-item>
+        <ion-segment
+          [(ngModel)]="selectedSegment"
+          (ionChange)="onSegmentChanged(selectedSegment)"
+        >
+          <ion-segment-button value="income">
+            <ion-icon name="remove-circle-outline"></ion-icon>
+          </ion-segment-button>
+          <ion-segment-button value="expense">
+            <ion-icon name="add-circle-outline"></ion-icon>
+          </ion-segment-button>
+        </ion-segment>
+        <app-pie-chart
+          [dataSource]="canvasDataSource"
+          [labels]="canvasLabels"
+        ></app-pie-chart>
       </ion-col>
     </ion-row>
   </ion-grid>

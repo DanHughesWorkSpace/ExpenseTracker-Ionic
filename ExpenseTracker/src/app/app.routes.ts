@@ -6,26 +6,10 @@ export const routes: Routes = [
     path: 'dashboard',
     loadComponent: () =>
       import('./pages/dashboard/dashboard.page').then((m) => m.DashboardPage),
-    children: [
-      {
-        path: 'expense',
-        loadComponent: () =>
-          import('./pages/dashboard/expense-canvas/expense-canvas.page').then(
-            (m) => m.ExpenseCanvasPage
-          ),
-      },
-      {
-        path: 'income',
-        loadComponent: () =>
-          import('./pages/dashboard/income-canvas/income-canvas.page').then(
-            (m) => m.IncomeCanvasPage
-          ),
-      },
-    ],
   },
   {
     path: '',
-    redirectTo: 'dashboard/expense',
+    redirectTo: 'dashboard',
     pathMatch: 'full',
   },
   {
