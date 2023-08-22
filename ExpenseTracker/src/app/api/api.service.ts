@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Transaction } from '../models/transaction-model';
 import { Category } from '../models/category';
@@ -9,6 +9,13 @@ import { Category } from '../models/category';
 })
 export class ApiService {
   http = inject(HttpClient);
+
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      // You can add more headers here
+    }),
+  };
 
   getExpenses() {
     return this.http.get(
@@ -26,5 +33,15 @@ export class ApiService {
     return this.http.get(
       'https://localhost:7285/api/Category/GetAll?userId=1'
     ) as Observable<Category[]>;
+  }
+
+  postTransaction(payload: Transaction) {
+    console.log('payload', payload);
+
+    return this.http.post(
+      'https://localhost:7285/api/Transaction/CreateEdit',
+      payload,
+      this.httpOptions
+    );
   }
 }

@@ -10,6 +10,12 @@ import { Canvas } from 'src/app/models/canvas';
   standalone: true,
   imports: [CommonModule, IonicModule],
 })
+
+// Chart..extend({
+//   afterFit: function() {
+//     this.height = this.height + 50;
+//   },
+// });
 export class PieChartComponent {
   @ViewChild('doughnutCanvas') doughnutCanvas!: ElementRef;
 
@@ -19,6 +25,9 @@ export class PieChartComponent {
   doughnutChart: any;
   lineChart: any;
 
+  // ngOnInit(){
+  //   this.doughnutCanvas.insta
+  // }
   ngOnChanges() {
     this.doughnutChartMethod();
   }

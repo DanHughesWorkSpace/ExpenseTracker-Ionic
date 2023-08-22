@@ -1,7 +1,7 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { ActionSheetController, IonicModule } from '@ionic/angular';
 import { SegmentChangeEventDetail } from '@ionic/core/dist/types/interface';
 import { ApiService } from 'src/app/api/api.service';
 import { Transaction } from 'src/app/models/transaction-model';
@@ -11,6 +11,7 @@ import { PieChartComponent } from './components/pie-chart/pie-chart.component';
 import { WalletComponent } from './components/wallet/wallet.component';
 import { Category } from 'src/app/models/category';
 import { Canvas } from 'src/app/models/canvas';
+import { TransactionFormComponent } from './components/transaction-form/transaction-form.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,11 +24,13 @@ import { Canvas } from 'src/app/models/canvas';
     FormsModule,
     PieChartComponent,
     WalletComponent,
+    TransactionFormComponent,
   ],
 })
 export class DashboardPage implements OnInit {
   apiService = inject(ApiService);
   router = inject(Router);
+  actionSheetController = inject(ActionSheetController);
   totalExpense = signal(0);
   totalIncome = signal(0);
   walletValue = computed(() => this.totalIncome() - this.totalExpense());
@@ -40,17 +43,27 @@ export class DashboardPage implements OnInit {
   canvasLabels: string[] = [];
   idToNameMap: Record<number, Category> = {};
 
+  isModalOpen = false;
+  newFormType = 'expense';
+  setOpen(isOpen: boolean, type?: string) {
+    if (type) this.newFormType = type;
+    this.isModalOpen = isOpen;
+  }
+
   ngOnInit() {
     this.apiService.getCategories().subscribe((res) => {
       res.forEach((category) => {
-        this.idToNameMap[category.id] = category || 'Unknown Category';
+        this.idToNameMap[category.id] = category;
       });
     });
     this.apiService.getExpenses().subscribe((res) => {
+      console.log('fff', this.idToNameMap);
       this.expenses = res;
-      const canvasData = res.map((expense) => {
+      const canvasData = res.map((expense: Transaction) => {
+        const categoryInfo = this.idToNameMap[expense.transaction_Category_Id];
+        const id = categoryInfo?.name;
         return {
-          id: this.idToNameMap[expense.transaction_Category_Id].name,
+          id: id,
           value: expense.amount,
         };
       });
@@ -94,5 +107,29 @@ export class DashboardPage implements OnInit {
 
   createCanvasLabels(canvasData: Canvas[]): string[] {
     return canvasData.map((item) => item.id);
+  }
+
+  async presentActionSheet() {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Transaction',
+      cssClass: 'my-custom-class',
+      buttons: [
+        {
+          text: 'Income',
+          icon: 'happy',
+          handler: () => {
+            this.setOpen(true, 'income');
+          },
+        },
+        {
+          text: 'Expense',
+          icon: 'sad',
+          handler: () => {
+            this.setOpen(true, 'expense');
+          },
+        },
+      ],
+    });
+    await actionSheet.present();
   }
 }

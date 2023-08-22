@@ -4,7 +4,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" color="red">
+<ion-content [fullscreen]="true">
   <ion-grid class="dashboard-container">
     <ion-row class="budget-panel">
       <ion-col>
@@ -28,6 +28,30 @@
           [dataSource]="canvasDataSource"
           [labels]="canvasLabels"
         ></app-pie-chart>
+      </ion-col>
+    </ion-row>
+    <ion-row class="add-btn">
+      <ion-col>
+        <ion-button (click)="presentActionSheet()" expand="block"
+          >Show action sheet</ion-button
+        >
+        <ion-modal [isOpen]="isModalOpen">
+          <ng-template>
+            <ion-header>
+              <ion-toolbar>
+                <ion-title>Modal</ion-title>
+                <ion-buttons slot="end">
+                  <ion-button (click)="setOpen(false)">Close</ion-button>
+                </ion-buttons>
+              </ion-toolbar>
+            </ion-header>
+            <ion-content class="ion-padding">
+              <app-transaction-form
+                [newFormType]="newFormType"
+              ></app-transaction-form>
+            </ion-content>
+          </ng-template>
+        </ion-modal>
       </ion-col>
     </ion-row>
   </ion-grid>
